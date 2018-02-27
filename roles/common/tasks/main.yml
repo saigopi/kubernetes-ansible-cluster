@@ -1,2 +1,28 @@
 ---
 # tasks file for common
+  - name: Disable swap
+    shell: |
+      swapoff -a
+      sed -i '/ swap /s/^/#/' /etc/fstab
+
+  - name: Disable SELinux
+    selinux:
+      state: disabled
+  
+  - name: Disable Firewall
+    systemd: name=firewalld state=stopped enabled=no
+
+  - name: Update yum
+    yum: name=* state=latest update_cache=yes
+
+  - name: Update yum
+    yum: name={{ item }} state=present
+    with_items:
+      - lsof
+      - net-tools
+
+  - name: Install docker
+    yum: name=docker state=present
+
+  - name: Start docker
+    service: name=docker state=started enabled=yes
