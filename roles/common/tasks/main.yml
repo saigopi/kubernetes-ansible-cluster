@@ -8,7 +8,7 @@
   - name: Disable SELinux
     selinux:
       state: disabled
-  
+
   - name: Disable Firewall
     systemd: name=firewalld state=stopped enabled=no
 
@@ -26,3 +26,13 @@
 
   - name: Start docker
     service: name=docker state=started enabled=yes
+
+  - name: Add Kubernetes repository
+    yum_repository:
+    name: Kubernetes
+    description: Kubernetes YUM repo
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
